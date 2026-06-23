@@ -3,121 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kompetenz-Check: Status Quo vs. Ideal</title>
+    <title>Analyse: Flexibilisierung der Lehre</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary-color: #4a90e2;
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
             --secondary-color: #e67e22;
-            --bg-color: #f4f7f6;
+            --bg-color: #f8f9fa;
             --card-bg: #ffffff;
             --text-color: #333;
+            --border-color: #dee2e6;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             display: flex;
             justify-content: center;
             padding: 20px;
+            line-height: 1.5;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             width: 100%;
             background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
         .page { display: none; }
         .page.active { display: block; }
         
-        h1, h2 { color: var(--primary-color); text-align: center; }
-        .intro-text { line-height: 1.6; margin-bottom: 20px; text-align: center; }
+        h1 { color: var(--primary-color); text-align: center; margin-bottom: 30px; }
+        h2 { color: var(--accent-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-top: 40px; }
+        
+        .intro-text { max-width: 800px; margin: 0 auto 30px auto; text-align: center; font-size: 1.1rem; }
         
         .dimension-block {
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             padding: 20px;
-            border: 1px solid #eee;
+            border: 1px solid var(--border-color);
             border-radius: 10px;
-            background: #fafafa;
-        }
-        .dimension-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #555;
-            border-bottom: 2px solid var(--primary-color);
-            display: inline-block;
+            background: #fff;
         }
 
-        /* Grid Layout für die zwei Datensätze */
         .survey-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 30px;
+            margin-top: 20px;
         }
         .column-header {
             text-align: center;
             font-weight: bold;
-            padding: 10px;
-            background: #eee;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            font-size: 1.2rem;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 8px;
         }
-        .aspect-row {
-            display: contents; /* Ermöglicht Kindern, sich im Grid zu positionieren */
+        .aspect-container {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
         }
-        .aspect-cell {
-            padding: 15px 0;
-            border-bottom: 1px solid #ddd;
-        }
-        .aspect-label {
+        .aspect-title {
             font-weight: bold;
             display: block;
-            margin-bottom: 8px;
-            color: #666;
+            margin-bottom: 12px;
+            color: #555;
+            font-size: 1.05rem;
         }
         .option-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 10px;
         }
         .option-item {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             cursor: pointer;
             font-size: 0.9rem;
-            padding: 4px;
-            border-radius: 4px;
+            padding: 8px;
+            border-radius: 6px;
             transition: background 0.2s;
+            border: 1px solid transparent;
         }
-        .option-item:hover { background: #eef2ff; }
-        .option-item input { margin-right: 8px; }
+        .option-item:hover { background: #f0f7ff; border-color: #d0e3ff; }
+        .option-item input { margin-top: 4px; margin-right: 12px; flex-shrink: 0; }
 
         .btn-container {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 30px;
+            margin-top: 40px;
         }
         .btn {
-            background-color: var(--primary-color);
+            background-color: var(--accent-color);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
+            padding: 15px 30px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
-            transition: opacity 0.2s;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.1s, opacity 0.2s;
         }
-        .btn:hover { opacity: 0.9; }
-        .btn-secondary { background-color: #888; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-secondary { background-color: #95a5a6; }
         
         .chart-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
+        }
+        @media (max-width: 800px) {
+            .survey-grid { grid-template-columns: 1fr; }
+            .column-header { display: none; }
         }
     </style>
 </head>
@@ -126,95 +129,263 @@
 <div class="container">
     <!-- SEITE 1: Einführung -->
     <div id="page-intro" class="page active">
-        <h1>Kompetenz-Analyse</h1>
+        <h1>Analyse der Flexibilisierung in der Lehre</h1>
         <div class="intro-text">
-            <p><strong>Ziel:</strong> Vergleichen Sie Ihren aktuellen Stand (Status Quo) mit Ihrem persönlichen Zielbild (Ideal).</p>
-            <p><strong>Vorgehen:</strong> 
-                Wir untersuchen 5 Dimensionen mit jeweils 3 Aspekten. 
-                Bewerten Sie jeden Aspekt zweimal: einmal für Ihre aktuelle Situation und einmal für Ihr Ideal.
-                Wählen Sie pro Spalte eine Aussage (0-4) oder "Trifft nicht zu".
-            </p>
+            <p>Willkommen zu diesem Analyse-Tool. Ziel ist es, Ihren aktuellen Stand in der Gestaltung Ihrer Lehrveranstaltungen mit Ihrem persönlichen Wunschbild zu vergleichen.</p>
+            <p><strong>Vorgehen:</strong> Der Fragebogen ist in 5 Dimensionen unterteilt. Bitte bewerten Sie jeden Aspekt zweimal: einmal für den <strong>Status Quo</strong> (Ist-Zustand) und einmal für Ihren <strong>Wunsch</strong> (Soll-Zustand). Wählen Sie jeweils die Aussage aus, die am besten zutrifft, oder markieren Sie "Trifft nicht zu".</p>
         </div>
         <div class="btn-container">
-            <button class="btn" onclick="showPage('page-survey')">Jetzt starten</button>
+            <button class="btn" onclick="showPage('page-survey')">Zum Fragebogen</button>
         </div>
     </div>
 
     <!-- SEITE 2: Fragebogen -->
     <div id="page-survey" class="page">
         <h1>Fragebogen</h1>
-        <div id="survey-content">
-            <!-- Wird per JavaScript befüllt -->
-        </div>
+        <div id="survey-content"></div>
         <div class="btn-container">
-            <button class="btn" onclick="calculateResults()">Auswerten</button>
+            <button class="btn" onclick="calculateResults()">Ergebnisse visualisieren</button>
         </div>
     </div>
 
     <!-- SEITE 3: Ergebnis -->
     <div id="page-result" class="page">
         <h1>Ihre Auswertung</h1>
-        <p style="text-align: center;">Vergleich zwischen Status Quo und Idealzustand</p>
+        <p style="text-align: center; margin-bottom: 30px;">Vergleich zwischen Status Quo und Wunschzustand</p>
         <div class="chart-container">
             <canvas id="resultChart"></canvas>
         </div>
         <div class="btn-container">
             <button class="btn" onclick="showPage('page-survey')">Antworten bearbeiten</button>
-            <button class="btn btn-secondary" onclick="location.reload()">Komplett neu starten</button>
+            <button class="btn btn-secondary" onclick="location.reload()">Neu starten</button>
         </div>
     </div>
 </div>
 
 <script>
-    let myChart = null; // Globales Objekt zum Speichern des Charts
+    let myChart = null;
 
-    const config = {
-        dimensions: 5,
-        aspectsPerDim: 3,
-        optionsPerAspect: 5
-    };
+    const surveyData = [
+        {
+            dimension: "Raum und Zeit des Lernens",
+            aspects: [
+                {
+                    title: "Anwesenheitspflicht",
+                    options: [
+                        "Die Teilnahme an allen Veranstaltungen ist verpflichtend.",
+                        "Die Studierenden dürfen eine bestimmte Anzahl an Terminen verpassen, ohne dass es Auswirkungen auf die Bewertung hat.",
+                        "Es gibt keine Anwesenheitspflicht, aber die Wichtigkeit der Teilnahme an den Veranstaltungen wird von mir ausdrücklich betont.",
+                        "Es gibt keine Anwesenheitspflicht, aber die Lehrveranstaltung ist so konzipiert, dass eine Anwesenheit für das Lernen notwendig ist.",
+                        "Die Studierenden können selbst entscheiden, an welchen Veranstaltungen sie teilnehmen möchten und verpasste Termine selbstständig nacharbeiten."
+                    ]
+                },
+                {
+                    title: "Ort der Lernaktivitäten",
+                    options: [
+                        "Alle Lernaktivitäten finden verpflichtend in einem festen Präsenzraum statt.",
+                        "Ich biete in Ausnahmefällen und auf Anfrage eine digitale Zuschaltung an, die Regel ist jedoch die Präsenzteilnahme.",
+                        "Der Großteil der Termine wird von mir auf ein bestimmtes Teilnahmeformat festgelegt (rein Online oder rein Präsenz), ansonsten können Studierende sich flexibel zwischen Online- und Präsenzteilnahme entscheiden.",
+                        "Ein geringer Teil der Termine wird von mir auf ein bestimmtes Teilnahmeformat festgelegt (rein Online oder rein Präsenz), ansonsten können Studierende sich flexibel zwischen Online- und Präsenzteilnahme entscheiden.",
+                        "Ich biete parallele Präsenz- und Online-Teilnahmeoptionen an, sodass Studierende für jeden Termin selbst entscheiden können, von welchem Ort aus sie teilnehmen."
+                    ]
+                },
+                {
+                    title: "Zeitpunkt der Lernaktivitäten",
+                    options: [
+                        "Alle Lehrveranstaltungen und Aktivitäten finden zu festen, nicht verhandelbaren Zeiten statt.",
+                        "Ich biete gelegentlich alternative Termine an (z. B. zwei Übungstermine pro Woche), aber die meisten Aktivitäten sind zeitlich fix.",
+                        "Ich stelle Aufzeichnungen oder äquivalente Aufgaben bereit, sodass Studierende verpasste feste Termine zeitversetzt nachholen können.",
+                        "Ich kombiniere einige feste gemeinsame Termine mit asynchronen Lernaktivitäten, deren Bearbeitungszeitraum Studierende innerhalb vorgegebener Korridore frei wählen können.",
+                        "Die Lehrveranstaltung ist so angelegt, dass Studierende den Zeitpunkt der meisten Lernaktivitäten (z. B. Bearbeitung von Modulen, Teilnahme an Online-Sessions, Abgaben innerhalb breiter Zeitfenster) weitgehend selbst bestimmen können."
+                    ]
+                }
+            ]
+        },
+        {
+            dimension: "Lehr- und Lernmethoden",
+            aspects: [
+                {
+                    title: "Berücksichtigung unterschiedlicher Vorkenntnisse",
+                    options: [
+                        "Ich gehe davon aus, dass alle Studierenden ähnliche Vorkenntnisse haben und gestalte die Lehrveranstaltung entsprechend.",
+                        "Ich frage zu Beginn nach Vorerfahrungen, gestalte die Lehrveranstaltung aber weitgehend einheitlich.",
+                        "Ich biete optionale Zusatzmaterialien oder -aufgaben für Studierende mit geringeren oder höheren Vorkenntnissen an.",
+                        "Ich plane Aufgaben und Aktivitäten explizit so, dass unterschiedliche Vorkenntnisse berücksichtigt werden (z. B. differenzierte Einstiegsaufgaben, Wahlaufgaben).",
+                        "Die Studierenden gestalten ihren Lernweg weitgehend selbst in Abhängigkeit von ihren Vorkenntnissen (z. B. individuelle Ziele, Auswahl passender Module/Aufgaben) und ich berate sie dabei."
+                    ]
+                },
+                {
+                    title: "Auswahl der Lernaktivitäten",
+                    options: [
+                        "Ich lege alle Lernaktivitäten (Aufgaben, Übungen, Formate) verbindlich fest.",
+                        "Ich biete gelegentlich alternative Aktivitäten an, der Großteil bleibt einheitlich für alle.",
+                        "Die Studierenden können innerhalb bestimmter Themen aus mehreren Lernaktivitäten wählen (z. B. Quiz, Diskussion, Praxisaufgabe), um Lernziele zu erreichen.",
+                        "Ich stelle Aktivitäts-Bündel zur Auswahl (z. B. „theoretisch-analytischer Pfad“ vs. „praxisorientierter Pfad“), aus denen Studierende ihren Lernweg zusammenstellen.",
+                        "Die Studierenden entscheiden jeweils selbstständig, wie sie sich mit den Lerninhalten beschäftigen wollen und besprechen mit mir, wie ihr individueller Weg zur Erreichung der Lernziele führt."
+                    ]
+                },
+                {
+                    title: "Lernunterstützung und Scaffolding",
+                    options: [
+                        "Ich gebe die Aufgabenstellung vor und erwarte von den Studierenden, dass sie diese eigenständig lösen.",
+                        "Ich gebe die Aufgabenstellung vor; auf explizite Nachfrage gebe ich weitere Hilfestellung.",
+                        "Ich stelle zu den Aufgaben grundlegende Hilfestellungen für alle bereit (z. B. eine allgemeine Anleitung oder ein Glossar).",
+                        "Ich biete differenzierte Unterstützungsangebote an, die die Studierenden bei Bedarf selbst wählen können (z. B. optionale Checklisten, Schritt-für-Schritt-Anleitungen).",
+                        "Ich stelle ein breites Spektrum an Scaffolding-Materialien zur freiwilligen Verfügung, die verschiedene Schwierigkeitsstufen der Unterstützung abdecken (z. B. von detaillierten Schreibgerüsten bis hin zu anregenden Impulsfragen)."
+                    ]
+                }
+            ]
+        },
+        {
+            dimension: "Lehr- und Lernmaterialien",
+            aspects: [
+                {
+                    title: "Zeitpunkt der Bereitstellung",
+                    options: [
+                        "Ich lade meine Folien oder sonstigen Materialien nicht auf der Lernplattform hoch.",
+                        "Ich lade alle Folien bzw. Materialien am Ende der Vorlesungszeit hoch.",
+                        "Ich lade die Materialien jeweils am Tag der Veranstaltung hoch.",
+                        "Ich lade die Materialien jeweils einige Tage vor der Veranstaltung hoch.",
+                        "Ich lade möglichst alle zentralen Materialien bereits zu Beginn des Semesters hoch und aktualisiere sie bei Bedarf."
+                    ]
+                },
+                {
+                    title: "Materialformen (Multimodalität)",
+                    options: [
+                        "Ich stelle keine Materialien zur Verfügung.",
+                        "Ich stelle meine Materialien ausschließlich in Textform zur Verfügung (z. B. Foliensätze, Skripte).",
+                        "Ich ergänze meine Textmaterialien gelegentlich durch einzelne Bilder oder Grafiken.",
+                        "Ich stelle meine Materialien in verschiedenen visuellen Formaten zur Verfügung (z. B. Text, Bilder, Grafiken, Tabellen).",
+                        "Ich gestalte die Materialien multimodal und ermögliche es Studierenden, aus verschiedenen Formaten (z. B. Text, Video, Audio, interaktive Elemente) diejenigen zu wählen, die zu ihrem Lernstil, ihrer Situation (z. B. unterwegs, geringe Bandbreite) und ihrem Bedarf am besten passen."
+                    ]
+                },
+                {
+                    title: "Auswahl und Menge",
+                    options: [
+                        "Ich gebe eine unkommentierte Liste an Literatur und Materialien vor.",
+                        "Ich unterscheide in meiner Materialliste zwischen „Pflichtlektüre“ und „empfohlener Zusatzliteratur“, wodurch Studierende begrenzt entscheiden können, wie viel sie zusätzlich bearbeiten.",
+                        "Ich kuratiere die Materialien so, dass es zu jedem Thema eine Kernquelle (z. B. ein kurzes Paper, Kapitel oder Video) und ergänzende Vertiefungsmaterialien gibt.",
+                        "Ich biete differenzierte Materialpakete an (z. B. ein „Basis-Paket“ und ein „Vertiefungs- oder Experten-Paket“), aus denen Studierende je nach Lernziel und verfügbarer Zeit auswählen können, wie umfangreich und anspruchsvoll sie sich mit einem Thema befassen.",
+                        "Ich stelle Materialien so bereit und beschreibe sie (z. B. Niveau, Umfang, Relevanz), dass Studierende ihren Materialeinsatz selbstbestimmt an ihre Lernziele, Vorkenntnisse und zeitlichen Ressourcen anpassen und damit ihren Lernweg flexibel gestalten können."
+                    ]
+                }
+            ]
+        },
+        {
+            dimension: "Austausch und Zusammenarbeit",
+            aspects: [
+                {
+                    title: "Gruppenarbeit",
+                    options: [
+                        "Ich lege die Gruppen für alle Aufgaben und Projekte selbst fest und die Gruppenzusammensetzung bleibt über die gesamte Lehrveranstaltung gleich.",
+                        "Ich lege die Gruppen für einige Aufgaben fest, während die Studierenden für andere Aufgaben selbst Gruppen bilden können.",
+                        "Die Studierenden können sich für die meisten Aufgaben selbst in Gruppen organisieren, ich biete aber bei Bedarf Unterstützung bei der Gruppenfindung an.",
+                        "Ich biete verschiedene Möglichkeiten der Gruppierung an (z. B. feste Gruppen, zufällige Gruppen, selbstgewählte Gruppen) und die Studierenden können je nach Aufgabe die für sie passende Form wählen.",
+                        "Die Studierenden haben volle Autonomie bei der Bildung von Gruppen und können die Gruppenzusammensetzung jederzeit anpassen"
+                    ]
+                },
+                {
+                    title: "Feedback",
+                    options: [
+                        "Ich gebe während des Lernprozesses kein Feedback; die Studierenden erfahren erst mit der finalen Bewertung, ob sie die Ziele erreicht haben.",
+                        "Ich gebe zu bestimmten Zeitpunkten ein standardisiertes Feedback für alle (z. B. allgemeine Kommentare zu einer Aufgabe), ohne auf individuelle Bedürfnisse einzugehen.",
+                        "Ich biete individuelle Feedback-Gespräche oder Rückmeldungen an, bestimme aber selbst, wann und in welcher Form diese stattfinden.",
+                        "Die Studierenden können aktiv Feedback anfordern, wenn sie es benötigen, und wir vereinbaren gemeinsam die passende Form (z. B. kurzes Gespräch, schriftliche Anmerkungen).",
+                        "Die Studierenden steuern ihren Feedback-Prozess eigenständig: Sie definieren selbst, wann, zu welchen Inhalten und in welcher Form sie Unterstützung benötigen, um ihren Lernfortschritt zu optimieren."
+                    ]
+                },
+                {
+                    title: "Austauschformate",
+                    options: [
+                        "Austausch und fachliche Fragen finden in der Präsenzveranstaltung im Plenum statt.",
+                        "Fragen an mich können zusätzlich per E-Mail gestellt werden. Ich gebe keine zusätzlichen Austauschformate für die Studierenden vor.",
+                        "Ich biete zusätzliche Austauschformate wie eine Lernplattform (z. B. Forum) für fachliche Fragen an, sodass Antworten für alle sichtbar und zeitlich asynchron abrufbar sind.",
+                        "Ich biete verschiedene synchrone und asynchrone Austauschformate (z. B. Foren, Chat, Breakout-Rooms, gemeinsame Dokumente) an, aus denen Studierende wählen können.",
+                        "Die Studierenden wählen und gestalten ihre Austauschformate selbst (z. B. eigene Online-Räume, regelmäßige Lernzirkel) und ich binde diese in die Lehrveranstaltung ein, ohne einen festen Kommunikationsweg vorzugeben."
+                    ]
+                }
+            ]
+        },
+        {
+            dimension: "Aufgaben und Prüfungen",
+            aspects: [
+                {
+                    title: "Format der Studien- und Prüfungsleistungen",
+                    options: [
+                        "Ich gebe ein einziges, festes Format für den Leistungsnachweis vor, das für alle Studierenden verbindlich ist (z. B. ausschließlich eine schriftliche Hausarbeit).",
+                        "In begründeten Einzelfällen lasse ich ein alternatives Format der Prüfung oder Abwandlung des Leistungsnachweises (z.B. längere Schreibzeit, mündlich statt schriftlich, keine Rechtschreibprüfung) zu.",
+                        "Ich biete eine kleine Auswahl an vorgegebenen Formaten an, aus denen die Studierenden wählen können (z. B. Hausarbeit oder eine kurze Präsentation).",
+                        "Ich biete eine breite Palette an Formaten an, die unterschiedliche Kompetenzen ansprechen (z. B. Wahl zwischen Essay, Portfolio, Poster oder Podcast), solange die formalen Kriterien erfüllt sind.",
+                        "Ich lasse die Studierenden das Format basierend auf ihrem Kontext oder ihren Stärken selbst vorschlagen, sofern es die Lernziele abbildet (z. B. ein Praxisprojekt statt einer Hausarbeit)."
+                    ]
+                },
+                {
+                    title: "Prüfungszeit",
+                    options: [
+                        "Alle Fristen und Prüfungen sind vorgegeben und können nicht verschoben werden.",
+                        "Ich biete für einige Aufgaben oder Prüfungen Zeitfenster an, innerhalb derer die Studierenden ihre Leistungen erbringen können.",
+                        "Die Studierenden können in Absprache mit mir individuelle Fristen für einige Aufgaben vereinbaren.",
+                        "Ich biete generell verschiedene zeitliche Optionen für Abgaben von Aufgaben und Prüfungsleistungen und lasse die Studierenden wählen, welche Option für sie am besten geeignet ist.",
+                        "Die Studierenden haben volle Autonomie bei der Gestaltung ihrer Lernzeit und können die Fristen für alle Aufgaben und Prüfungen selbst festlegen."
+                    ]
+                },
+                {
+                    title: "Themenwahl",
+                    options: [
+                        "Ich lege das Thema der Prüfungs- und Studienleistungen fest.",
+                        "Ich erlaube kleinere Variation des vorgegebenen Themas (z. B. Auswahl eines Beispiels innerhalb eines Rahmenthemas).",
+                        "Ich biete mehrere vordefinierte Themenbereiche an, aus denen die Studierenden wählen können.",
+                        "Die Studierenden können eigene Themenvorschläge einbringen, solange sie in meinen Themenrahmen passen und die Lernziele abdecken.",
+                        "Die Studierenden definieren ihre Themen in Absprache mit mir weitgehend selbst, orientiert an ihren Interessen, Vorerfahrungen und beruflichen Zielen und passend zu den Lernzielen."
+                    ]
+                }
+            ]
+        }
+    ];
 
     function generateSurvey() {
         const container = document.getElementById('survey-content');
         let html = '';
 
-        for (let d = 1; d <= config.dimensions; d++) {
+        surveyData.forEach((dim, dIdx) => {
             html += `<div class="dimension-block">
-                        <div class="dimension-title">Dimension ${d}</div>
+                        <h2>${dim.dimension}</h2>
                         <div class="survey-grid">
                             <div class="column-header">Status Quo</div>
-                            <div class="column-header">Ideal</div>`;
+                            <div class="column-header">Wunsch</div>`;
             
-            for (let a = 1; a <= config.aspectsPerDim; a++) {
-                // Wir erstellen für jeden Aspekt zwei Zellen (eine für Status Quo, eine für Ideal)
+            dim.aspects.forEach((asp, aIdx) => {
+                const dimId = dIdx + 1;
+                const aspId = aIdx + 1;
+                
                 html += `
-                    <div class="aspect-cell">
-                        <span class="aspect-label">Aspekt ${d}.${a}</span>
-                        <div class="option-group">${generateOptions(d, a, 'status')}</div>
+                    <div class="aspect-container">
+                        <span class="aspect-title">${asp.title}</span>
+                        <div class="option-group">${generateOptions(dimId, aspId, 'status', asp.options)}</div>
                     </div>
-                    <div class="aspect-cell">
-                        <span class="aspect-label">Aspekt ${d}.${a}</span>
-                        <div class="option-group">${generateOptions(d, a, 'ideal')}</div>
+                    <div class="aspect-container">
+                        <span class="aspect-title">${asp.title}</span>
+                        <div class="option-group">${generateOptions(dimId, aspId, 'wunsch', asp.options)}</div>
                     </div>`;
-            }
+            });
             html += `</div></div>`;
-        }
+        });
         container.innerHTML = html;
     }
 
-    function generateOptions(dim, asp, type) {
+    function generateOptions(dim, asp, type, options) {
         let optHtml = '';
-        for (let v = 0; v < config.optionsPerAspect; v++) {
+        options.forEach((text, index) => {
             optHtml += `
                 <label class="option-item">
-                    <input type="radio" name="${type}_dim${dim}_asp${asp}" value="${v}"> 
-                    Aussage ${v}
+                    <input type="radio" name="${type}_dim${dim}_asp${asp}" value="${index}"> 
+                    <span><strong>${index}:</strong> ${text}</span>
                 </label>`;
-        }
+        });
         optHtml += `
             <label class="option-item">
                 <input type="radio" name="${type}_dim${dim}_asp${asp}" value="na"> 
-                <em>Trifft nicht zu</em>
+                <span><em>Trifft nicht zu</em></span>
             </label>`;
         return optHtml;
     }
@@ -227,21 +398,22 @@
 
     function calculateResults() {
         const statusScores = [];
-        const idealScores = [];
+        const wunschScores = [];
 
-        for (let d = 1; d <= config.dimensions; d++) {
-            statusScores.push(getDimensionAverage('status', d));
-            idealScores.push(getDimensionAverage('ideal', d));
-        }
+        surveyData.forEach((dim, dIdx) => {
+            const dimId = dIdx + 1;
+            statusScores.push(getDimensionAverage('status', dimId, dim.aspects.length));
+            wunschScores.push(getDimensionAverage('wunsch', dimId, dim.aspects.length));
+        });
 
-        renderChart(statusScores, idealScores);
+        renderChart(statusScores, wunschScores);
         showPage('page-result');
     }
 
-    function getDimensionAverage(type, dim) {
+    function getDimensionAverage(type, dim, aspectCount) {
         let sum = 0;
         let count = 0;
-        for (let a = 1; a <= config.aspectsPerDim; a++) {
+        for (let a = 1; a <= aspectCount; a++) {
             const selected = document.querySelector(`input[name="${type}_dim${dim}_asp${a}"]:checked`);
             if (selected && selected.value !== 'na') {
                 sum += parseInt(selected.value);
@@ -251,29 +423,26 @@
         return count > 0 ? (sum / count).toFixed(2) : 0;
     }
 
-    function renderChart(statusData, idealData) {
+    function renderChart(statusData, wunschData) {
         const ctx = document.getElementById('resultChart').getContext('2d');
-        
-        if (myChart !== null) {
-            myChart.destroy();
-        }
+        if (myChart !== null) myChart.destroy();
         
         myChart = new Chart(ctx, {
             type: 'radar',
             data: {
-                labels: ['Dimension 1', 'Dimension 2', 'Dimension 3', 'Dimension 4', 'Dimension 5'],
+                labels: surveyData.map(d => d.dimension),
                 datasets: [
                     {
                         label: 'Status Quo',
                         data: statusData,
-                        backgroundColor: 'rgba(74, 144, 226, 0.2)',
-                        borderColor: 'rgba(74, 144, 226, 1)',
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderColor: 'rgba(52, 152, 219, 1)',
                         borderWidth: 3,
-                        pointBackgroundColor: 'rgba(74, 144, 226, 1)'
+                        pointBackgroundColor: 'rgba(52, 152, 219, 1)'
                     },
                     {
-                        label: 'Ideal',
-                        data: idealData,
+                        label: 'Wunsch',
+                        data: wunschData,
                         backgroundColor: 'rgba(230, 126, 34, 0.2)',
                         borderColor: 'rgba(230, 126, 34, 1)',
                         borderWidth: 3,
@@ -286,14 +455,12 @@
                     r: {
                         min: 0,
                         max: 4,
-                        ticks: { stepSize: 1 }
+                        ticks: { stepSize: 1 },
+                        pointLabels: { font: { size: 12 } }
                     }
                 },
                 plugins: {
-                    legend: { 
-                        position: 'bottom',
-                        labels: { padding: 20 }
-                    }
+                    legend: { position: 'bottom' }
                 }
             }
         });
