@@ -129,10 +129,21 @@
 <div class="container">
     <!-- SEITE 1: Einführung -->
     <div id="page-intro" class="page active">
-        <h1>Analyse der Flexibilisierung in der Lehre</h1>
+        <h1>FlexiRadar: Ein Reflexions- und Visualisierungstool für flexibles Lehren</h1>
         <div class="intro-text">
-            <p>Willkommen zu diesem Analyse-Tool. Ziel ist es, Ihren aktuellen Stand in der Gestaltung Ihrer Lehrveranstaltungen mit Ihrem persönlichen Wunschbild zu vergleichen.</p>
-            <p><strong>Vorgehen:</strong> Der Fragebogen ist in 5 Dimensionen unterteilt. Bitte bewerten Sie jeden Aspekt zweimal: einmal für den <strong>Status Quo</strong> (Ist-Zustand) und einmal für Ihren <strong>Wunsch</strong> (Soll-Zustand). Wählen Sie jeweils die Aussage aus, die am besten zutrifft, oder markieren Sie "Trifft nicht zu".</p>
+            <p>Das FlexiRadar unterstützt Sie dabei, den Flexibilisierungsgrad Ihrer eigenen Lehrveranstaltung einzuschätzen und Entwicklungspotenziale sichtbar zu machen.</p>
+            <p><strong>Der Fragebogen</strong></p>  
+            <p>Das FlexiRadar betrachtet flexible Lehre entlang von fünf Dimensionen.
+                <ul>
+                    <li>Raum und Zeit des Lernens</li>
+                    <li>Lehr- und Lernmethoden</li>
+                    <li>Lehr- und Lernmaterialien</li>
+                    <li>Austausch und Zusammenarbeit</li>
+                    <li>Aufgaben und Prüfungen</li>
+                </ul>
+             Innerhalb jeder Dimension werden drei zugehörige Aspekte anhand von mehreren Aussagen betrachtet. Sie wählen jeweils die Aussage aus, die am besten auf Sie und Ihre Lehrveranstaltung zutrifft. Dabei bewerten Sie jeden Aspekt zweimal: einmal für den Status quo und einmal für Ihren Wunschzustand. In der Auswertung werden diese beiden Zustände gegenübergestellt und so Spannungen und Potenziale visualisiert.</p>
+
+
         </div>
         <div class="btn-container">
             <button class="btn" onclick="showPage('page-survey')">Zum Fragebogen</button>
@@ -141,17 +152,19 @@
 
     <!-- SEITE 2: Fragebogen -->
     <div id="page-survey" class="page">
-        <h1>Fragebogen</h1>
+        <h1>FlexiRadar-Fragebogen</h1>
+        <p><strong>Hinweis:</strong> Die Aussagen unter <strong>Status quo</strong> und <strong>Wunsch</strong> sind identisch. Wählen Sie jeweils die Aussage aus, die am besten zutrifft, oder markieren Sie "Trifft nicht zu". Um Potenzial sichtbar zu machen bewerten Sie jeden Aspekt zweimal: einmal für den Ist-Zustand (Status quo) und einmal für Ihren Wunschzustand (Wunsch). Nicht beantwortete Aspekte fallen aus der Wertung heraus.
         <div id="survey-content"></div>
         <div class="btn-container">
             <button class="btn" onclick="calculateResults()">Ergebnisse visualisieren</button>
+            <button class="btn btn-secondary" onclick="showPage('page-intro')">Zur Startseite (Antworten bleiben erhalten)</button>
         </div>
     </div>
 
     <!-- SEITE 3: Ergebnis -->
     <div id="page-result" class="page">
-        <h1>Ihre Auswertung</h1>
-        <p style="text-align: center; margin-bottom: 30px;">Vergleich zwischen Status Quo und Wunschzustand</p>
+        <h1>FlexiRadar: Ihre Auswertung</h1>
+        <p style="text-align: center; margin-bottom: 30px;">Vergleich zwischen Status quo und Wunschzustand</p>
         <div class="chart-container">
             <canvas id="resultChart"></canvas>
         </div>
@@ -351,7 +364,7 @@
             html += `<div class="dimension-block">
                         <h2>${dim.dimension}</h2>
                         <div class="survey-grid">
-                            <div class="column-header">Status Quo</div>
+                            <div class="column-header">Status quo</div>
                             <div class="column-header">Wunsch</div>`;
             
             dim.aspects.forEach((asp, aIdx) => {
@@ -433,7 +446,7 @@
                 labels: surveyData.map(d => d.dimension),
                 datasets: [
                     {
-                        label: 'Status Quo',
+                        label: 'Status quo',
                         data: statusData,
                         backgroundColor: 'rgba(52, 152, 219, 0.2)',
                         borderColor: 'rgba(52, 152, 219, 1)',
